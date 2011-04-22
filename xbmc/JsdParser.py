@@ -95,7 +95,8 @@ class JsdParser(object):
         if isinstance(returns, str):
             wiki += WikiUtils.Italic(returns) + "\n"
         else:
-            pass
+            wiki += WikiUtils.NewLine()
+            wiki += JsdParser.__parseType(returns)
             
         wiki += "\n"
         return wiki
@@ -109,6 +110,17 @@ class JsdParser(object):
         
         if "type" in type:
             wiki += WikiUtils.Italic(type["type"])
+            
+            if type["type"] == "array" and ("minItems" in type or "maxItems" in type):
+                wiki += "["
+                if "minItems" in type:
+                    wiki += str(type["minItems"]) + ".."
+
+                if "maxItems" in type:
+                    wiki += str(type["maxItems"])
+                elif "minItems" in type:
+                    wiki += "X"
+                wiki += "]"
         elif "$ref" in type:
             wiki += WikiUtils.Italic(WikiUtils.SectionLink(type["$ref"]))
         
@@ -148,7 +160,7 @@ class JsdParser(object):
             wiki += WikiUtils.Bold("Properties:") + "\n"
             
             for property in type["properties"]:
-                wiki += WikiUtils.ListItem(JsdParser.__parseType(type["properties"][property], property, level + 1), level) 
+                wiki += WikiUtils.ListItem(JsdParser.__parseType(type["properties"][property], property, level + 1), level)
         
         return wiki
         

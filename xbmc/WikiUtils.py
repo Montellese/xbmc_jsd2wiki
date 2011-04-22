@@ -58,10 +58,22 @@ class WikiUtils(object):
         return level * "*" + text + "\n"
     
     @staticmethod
+    def ListItemContinue(text, level = 1):
+        if level < 1:
+            level = 1
+        return level * "*" + ":" + text + "\n"
+    
+    @staticmethod
     def NumberedListItem(text, level = 1):
         if level < 1:
             level = 1
         return level * "#" + text + "\n"
+    
+    @staticmethod
+    def NumberedListItemContinue(text, level = 1):
+        if level < 1:
+            level = 1
+        return level * "#" + ":" + text + "\n"
     
     @staticmethod
     def Code(language, code):
