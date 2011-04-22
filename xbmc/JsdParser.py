@@ -64,10 +64,14 @@ class JsdParser(object):
         wiki = ""
         
         if "description" in method and len(method["description"]) > 0:
-            wiki += method["description"] + "\n"
+            wiki += method["description"]
             wiki += WikiUtils.NewLine()
         
-        wiki += WikiUtils.Bold("Parameters: ")
+        wiki += WikiUtils.Bold("Permission:") + " "
+        wiki += method["permission"]
+        wiki += WikiUtils.NewLine()
+        
+        wiki += WikiUtils.Bold("Parameters:") + " "
         if "params" not in method or len(method["params"]) <= 0:
             wiki += "None\n"
             wiki += WikiUtils.NewLine()
