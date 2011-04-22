@@ -101,7 +101,7 @@ class JsdParser(object):
         return wiki
     
     @staticmethod
-    def __parseType(type, name = None, level = 0):
+    def __parseType(type, name = None, level = 1):
         wiki = ""
         
         if name is None:
@@ -130,16 +130,25 @@ class JsdParser(object):
                     wiki += WikiUtils.Bold("Default:") + " "
                 else:
                     wiki += " = "
-                    
-                if type["default"] is not None:
+                
+                if isinstance(type["default"], str):
+                    wiki += "\"%s\"" % type["default"]
+                elif type["default"] is not None:
                     wiki += str(type["default"])
                 else:
                     wiki += "null"
             
             if name is not None:
-                wiki = "[%s]" % wiki
+                wiki = "[ %s ]" % wiki
         elif name is None:
             wiki += "false"
+            
+        if "properties" in type:
+            wiki += WikiUtils.NewLine()
+            wiki += WikiUtils.Bold("Properties:") + "\n"
+            
+            for property in type["properties"]:
+                wiki += WikiUtils.ListItem(JsdParser.__parseType(type["properties"][property], property, level + 1), level) 
         
         return wiki
         
