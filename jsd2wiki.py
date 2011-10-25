@@ -8,9 +8,13 @@ import sys
 import xbmc
 
 def main(argv):
-    if len(argv) < 2:
-        print("Usage: jsd2wiki jsonSchemaFile outputFile")
-        return -1
+    length = len(argv)
+    if length < 1:
+        argv.append("../introspect.jsd")
+    if length < 2:
+        argv.append("../wiki.txt")
+        '''print("Usage: jsd2wiki jsonSchemaFile outputFile")
+        return -1'''
     
     input = None
     output = None
@@ -25,7 +29,7 @@ def main(argv):
     except IOError as e:
         print("Error while reading the given file: %s" % argv[0])
     except xbmc.JsdSchemaError as e:
-        print("Error in the given json schema: %s" % argv[1])
+        print("Error in the given json schema: %s" % e.message)
     except xbmc.JsdTypeError as e:
         print("Error while parsing a json schema type named %s: %s" % (e.name, e.message))
     finally:
